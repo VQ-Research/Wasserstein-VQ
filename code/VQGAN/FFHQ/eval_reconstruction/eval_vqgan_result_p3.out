@@ -1,0 +1,5 @@
+Working with z of shape (1, 256, 16, 16) = 65536 dimensions.
+loaded pretrained LPIPS loss from model/vgg.pth
+compute FID of a folder with ffhq statistics
+Found 70000 images in the folder /mmfs1/data/fangxian/WassersteinVQ/VQGAN2/reconstruction_data/FFHQ/resolution_256/rec_16_100000
+FID: 2.712108919342654

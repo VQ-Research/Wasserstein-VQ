@@ -1,1 +1,2 @@
-# Wasserstein-VQ
+# Vector Quantization By Distribution Matching
+

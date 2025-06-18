@@ -1,0 +1,6 @@
+Working with z of shape (1, 256, 16, 16) = 65536 dimensions.
+loaded pretrained LPIPS loss from model/vgg.pth
+compute FID of a folder with ffhq statistics
+downloading statistics to /home/fangxian/packages/anaconda/envs/share_VAR/lib/python3.8/site-packages/cleanfid/stats/ffhq_clean_trainval70k_256.npz
+Found 70000 images in the folder /projects/yuanai/projects/WassersteinVQ/VAR/reconstruction_data/FFHQ/resolution_256/rec_16_50000
+FID: 2.069651893781554
