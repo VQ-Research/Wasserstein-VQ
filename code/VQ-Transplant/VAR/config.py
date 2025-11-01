@@ -105,28 +105,16 @@ def parse_arg():
     args.data_pre = '{}'.format(args.dataset_name)
 
     ### model prefix 
-    if args.VQ == "original_ldm":
-        args.model_pre = 'model_'
-    elif args.VQ == "wasserstein_vq" or args.VQ == "vanilla_vq" or args.VQ == "ema_vq" or args.VQ == "online_vq" or args.VQ == "mmd_vq":
-        args.model_pre = 'model_{}_{}_{}'.format(args.codebook_size, args.codebook_dim, args.pq)
-    else:
-        args.model_pre = 'model_{}_{}'.format(args.project_dim, args.L)
+    if args.VQ == "wasserstein_vq" or args.VQ == "vanilla_vq" or args.VQ == "ema_vq" or args.VQ == "online_vq" or args.VQ == "mmd_vq":
+        args.model_pre = 'model_{}_{}'.format(args.codebook_size, args.codebook_dim)
     
     ### loss prefix 
-    if args.VQ == "original_ldm":
-        args.loss_pre = 'loss_'
-    elif args.VQ == "wasserstein_vq" or args.VQ == "vanilla_vq" or args.VQ == "ema_vq" or args.VQ == "online_vq" or args.VQ == "mmd_vq":
+    if args.VQ == "wasserstein_vq" or args.VQ == "vanilla_vq" or args.VQ == "ema_vq" or args.VQ == "online_vq" or args.VQ == "mmd_vq":
         args.loss_pre = 'loss_{}_{}_{}_{}'.format(args.alpha, args.beta, args.gamma, args.disc_weight)
-    else:
-        args.loss_pre = 'loss_{}_{}'.format(args.beta, args.disc_weight)
 
     ### train prefix 
-    if args.VQ == "original_ldm":
-        args.training_pre = '{}'.format(args.VQ)
-    elif args.VQ == "wasserstein_vq" or args.VQ == "vanilla_vq" or args.VQ == "ema_vq" or args.VQ == "online_vq" or args.VQ == "mmd_vq":
+    if args.VQ == "wasserstein_vq" or args.VQ == "vanilla_vq" or args.VQ == "ema_vq" or args.VQ == "online_vq" or args.VQ == "mmd_vq":
         args.training_pre = '{}_{}_{}'.format(args.VQ, args.stage, args.use_multiscale)
-    else:
-        args.training_pre = '{}_{}'.format(args.VQ, args.stage)
     args.saver_name_pre = args.training_pre + '_' + args.data_pre + '_' + args.model_pre + '_' + args.loss_pre
 
     dict_args = vars(args)

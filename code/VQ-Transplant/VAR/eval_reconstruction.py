@@ -72,12 +72,10 @@ def load_dataset(args, batch_size=16):
 def eval_reconstruction(args, model):
     val_dataloader, len_val_set = load_dataset(args, batch_size=16)
     if args.VQ == "wasserstein_vq" or args.VQ == "vanilla_vq" or args.VQ == "mmd_vq" or args.VQ == "online_vq" or args.VQ == "ema_vq": 
-        if args.pq == 1:
-            reconstruction_name = '{}_{}_{}_{}'.format(args.VQ, args.stage, args.codebook_size, args.use_multiscale)
+        if args.stage == "transplant":
+            reconstruction_name = '{}_{}_{}_{}_{}'.format(args.VQ, args.stage, args.codebook_size, args.use_multiscale, args.transplant_epochs)
         else:
-            reconstruction_name = '{}_{}_{}'.format(args.VQ, args.stage, args.pq)
-    elif args.VQ == 'bsq' or args.VQ == 'fsq' or args.VQ ==  'lfq':
-        reconstruction_name = '{}_{}_{}_{}'.format(args.VQ, args.stage, args.project_dim, args.L)
+            reconstruction_name = '{}_{}_{}_{}_{}'.format(args.VQ, args.stage, args.codebook_size, args.use_multiscale, args.refinement_epochs)
 
     reconstruction_path = os.path.join(args.reconstruction_dir, reconstruction_name)
     os.makedirs(reconstruction_path, exist_ok=True)
@@ -123,13 +121,11 @@ def eval_reconstruction(args, model):
 def eval_reconstruction_epoch(args, model, epoch):
     val_dataloader, len_val_set = load_dataset(args, batch_size=16)
     if args.VQ == "wasserstein_vq" or args.VQ == "vanilla_vq" or args.VQ == "mmd_vq" or args.VQ == "online_vq" or args.VQ == "ema_vq": 
-        if args.pq == 1:
-            reconstruction_name = '{}_{}_{}_{}_{}'.format(args.VQ, args.stage, args.codebook_size, args.use_multiscale, epoch)
+        if args.stage == "transplant":
+            reconstruction_name = '{}_{}_{}_{}_{}_{}'.format(args.VQ, args.stage, args.codebook_size, args.use_multiscale, args.transplant_epochs, epoch)
         else:
-            reconstruction_name = '{}_{}_{}_{}'.format(args.VQ, args.stage, args.pq, epoch)
-    elif args.VQ == 'bsq' or args.VQ == 'fsq' or args.VQ ==  'lfq':
-        reconstruction_name = '{}_{}_{}_{}_{}'.format(args.VQ, args.stage, args.project_dim, args.L, epoch)
-    
+            reconstruction_name = '{}_{}_{}_{}_{}_{}'.format(args.VQ, args.stage, args.codebook_size, args.use_multiscale, args.refinement_epochs, epoch)
+            
     reconstruction_path = os.path.join(args.reconstruction_dir, reconstruction_name)
     os.makedirs(reconstruction_path, exist_ok=True)
 

@@ -92,7 +92,7 @@ def main_worker(args):
     train_loss = LossManager()
     print("Start training...")
     start_epoch = 1 
-    total_steps = len(train_dataloader)*args.transplant_epochs
+    total_steps = len(train_dataloader) * args.transplant_epochs
     for epoch in range(start_epoch, args.transplant_epochs+1):
         train_sampler.set_epoch(epoch)
         print("epoch:%d, cur_lr:%4f"%(epoch, optimizer.param_groups[0]["lr"]))
