@@ -42,59 +42,7 @@ class Wasserstein_Quantizer(nn.Module):
         self.embedding.weight.data.normal_(0, 0.01)
         self.embedding.weight.requires_grad = True
         self.queue = Queue(args)
-
-    def calc_multi_wasserstein_loss(self, z=None):
-        if z==None:
-            z = self.queue.obtain_feature_from_queue()
-
-        N = z.size(0)
-        D = z.size(1)
-
-        std = z.std(dim=0).max().detach()
-        z = z / (std + 1e-8)
-        c = self.embedding.weight /  (std + 1e-8)
-
-        permutation = torch.randperm(self.codebook_size)
-        c = c[permutation]
-        bulk_size = 1024
-        if self.codebook_size%1024 == 0:
-            c = c.view(-1, 1024, D) ## [T, 1024, D]
-            bulk_size = 1024
-        elif self.codebook_size%5000 == 0:
-            c = c.view(-1, 5000, D) ## [T, 5000, D]
-            bulk_size = 5000
-        T = c.size(0)
-
-        z_mean = z.mean(0) ## [D]
-        z_covariance = torch.mm((z - torch.mean(z, dim=0, keepdim=True)).t(), z - torch.mean(z, dim=0, keepdim=True))/(N-1) ## [D, D]
-
-        c_mean = c.mean(1) ## [T, D]
-        c_covariance = torch.bmm((c - torch.mean(c, dim=1, keepdim=True)).transpose(1,2), c - torch.mean(c, dim=1, keepdim=True))/(bulk_size-1) ##[T, D, D]
-
-        ### calculation mean part
-        z_mean = z_mean.repeat(T, 1).detach() ##[T, D]
-        part_mean =  torch.sum(torch.multiply(z_mean - c_mean, z_mean - c_mean), dim=1) ##[T]
-
-        ### 1/2 z_covariance
-        S1, Q1 = torch.linalg.eigh(z_covariance)
-        sqrt_S1 = torch.diag(torch.sqrt(F.relu(S1)+ 1e-8))
-        z_sqrt_covariance = torch.mm(torch.mm(Q1, sqrt_S1), Q1.T)
-        nan_mask = torch.isnan(z_sqrt_covariance)
-        z_sqrt_covariance[nan_mask] = 0.0
-        z_sqrt_covariance = z_sqrt_covariance.detach() ##[D, D]
-        z_sqrt_covariance = z_sqrt_covariance.repeat(T, 1, 1) ## [T, D, D]
-
-        ### 1/2 covariance
-        covariance = torch.bmm(torch.bmm(z_sqrt_covariance, c_covariance), z_sqrt_covariance)
-        S2, Q2 = torch.linalg.eigh(covariance) ##[T, D]; [T, D, D]
-        sqrt_S2 = torch.sqrt(F.relu(S2)+ 1e-8) ##[T, D]
-
-        diagonals = torch.diagonal(z_covariance.detach() + c_covariance, offset=0, dim1=-2, dim2=-1) ##[T, D]
-        part_covariance = F.relu(torch.sum(diagonals, dim=1) - 2.0 * sqrt_S2.sum(dim=1)) ##[T]
-
-        wasserstein_loss = torch.mean(torch.sqrt(part_mean + part_covariance + 1e-8))
-        return wasserstein_loss
-
+        
     def calc_wasserstein_loss(self, z=None):
         if z==None:
             z = self.queue.obtain_feature_from_queue()
