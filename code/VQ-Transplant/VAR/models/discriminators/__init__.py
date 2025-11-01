@@ -1,0 +1,4 @@
+from models.discriminators.discriminator_stylegan import Discriminator as StyleGANDiscriminator
+from models.discriminators.discriminator_patchgan import NLayerDiscriminator as PatchGANDiscriminator
+from models.discriminators.discriminator_patchgan_maskbit import NLayerDiscriminator as PatchGANMaskBitDiscriminator
+from models.discriminators.discriminator_dino import DinoDisc as DinoDiscriminator
