@@ -16,22 +16,13 @@ from data.augmentation import random_crop_arr, center_crop_arr
 from data.lsun_church import LSUNChurchesDataset
 from data.lsun_bedroom import LSUNBedroomsDataset
 
-paths_vector = {
+paths = {
     "ImageNet": "imagenet",
     "FFHQ": "FFHQ",
     "CelebAHQ":"CelebAHQ",
     "Bedrooms":"LSUN-Bedrooms",
     "Churches": "LSUN-Churches",
 }
-
-paths_bc = {
-    "ImageNet": "ImageNet",
-    "FFHQ": "FFHQ",
-    "CelebAHQ":"CelebAHQ",
-    "Bedrooms":"LSUN-Bedrooms",
-    "Churches": "LSUN-Churches",
-}
-
 
 def build_train_transform(args):
     transform = transforms.Compose([
@@ -51,10 +42,6 @@ def build_eval_transform(args):
     return transform
 
 def build_dataloader(args):
-    if args.path == "bc":
-        paths = paths_bc
-    else:
-        paths = paths_vector
     data_path = os.path.join(args.dataset_dir, paths[args.dataset_name])
     train_transform = build_train_transform(args)
     eval_transform = build_eval_transform(args)

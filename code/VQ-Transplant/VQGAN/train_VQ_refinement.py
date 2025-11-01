@@ -31,11 +31,10 @@ import ruamel.yaml as yaml
 import config
 from utils.util import Logger, LossManager, Pack, adjust_learning_rate, save_checkpoint
 from data import dataloader
-from models.pq_model import PQModel
 from models.vq_model import VQModel
 from models.vq_loss import VQLoss
 from metric.metric import PSNR, LPIPS, SSIM
-from eval_tokenizer import eval_one_epoch_vq, eval_one_epoch_pq
+from eval_tokenizer import eval_one_epoch_vq
 
 from timm.scheduler import create_scheduler_v2 as create_scheduler
 from utils.distributed import init_distributed_mode
@@ -58,13 +57,7 @@ def main_worker(args):
     rank = dist.get_rank()
     device = rank % torch.cuda.device_count()
     torch.cuda.set_device(device)
-    if args.VQ == "wasserstein_vq" or args.VQ == "vanilla_vq" or args.VQ == "ema_vq" or args.VQ == "online_vq" or args.VQ == "mmd_vq":
-        if args.pq == 1:
-            vq_model = VQModel(args)
-        else:
-            vq_model = PQModel(args)
-    else:
-        pass 
+    vq_model = VQModel(args)
 
     total_para = 0
     for p in vq_model.encoder.parameters():
