@@ -15,7 +15,7 @@ from utils.misc import str2bool
 import ruamel.yaml as yaml
 
 def parse_arg():
-    parser = argparse.ArgumentParser(description='VQ-Transplant (double VQ/PQ/SQ system) based on VAR Discrete Tokenizer.') 
+    parser = argparse.ArgumentParser(description='VQ-Transplant (double VQ system) based on VAR Discrete Tokenizer.') 
 
     ### Dataset and Dataloader Configuration
     parser.add_argument('--dataset_dir', default="/project/6105494/shared/data/", type=str, help='the directory of dataset') 
@@ -27,7 +27,7 @@ def parse_arg():
     
     ### Model Configuration
     parser.add_argument('--codebook_size', default=4096, type=int, help='the size of codebook.')
-    parser.add_argument('--codebook_dim', default=16, type=int, help='the dimension of codebook vectors for pq and vq.')
+    parser.add_argument('--codebook_dim', default=16, type=int, help='the dimension of codebook vectors for vq.')
 
     ### Loss Configuration
     parser.add_argument('--alpha', type=float, default=1.0, help="transplant stage: the hyperparameter of code commit loss.")

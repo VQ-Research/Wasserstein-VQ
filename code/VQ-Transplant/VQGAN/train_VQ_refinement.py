@@ -132,13 +132,8 @@ def main_worker(args):
 
         if epoch % args.eval_epochs == 0:
             with torch.no_grad():
-                if args.VQ == "wasserstein_vq" or args.VQ == "vanilla_vq" or args.VQ == "ema_vq" or args.VQ == "online_vq" or args.VQ == "mmd_vq":
-                    if args.pq == 1:
-                        results_pack = eval_one_epoch_vq(args, vq_model, epoch, val_dataloader, len_val_set)
-                    else:
-                        results_pack = eval_one_epoch_pq(args, vq_model, epoch, val_dataloader, len_val_set)
-                else:
-                    pass 
+                results_pack = eval_one_epoch_vq(args, vq_model, epoch, val_dataloader, len_val_set)
+                  
 
             if int(os.environ['LOCAL_RANK']) == 0:
                 results_eval['epoch'].append(epoch)
