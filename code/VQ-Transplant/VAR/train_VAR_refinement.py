@@ -71,11 +71,9 @@ def main_worker(args):
     vq_loss = VQLoss(args).to(device)
 
     model_para = list(vq_model.decoder.parameters()) + list(vq_model.post_quant_conv.parameters()) + list(vq_model.projector_out.parameters())
-    model_temp_para = list(vq_model.projector_out.parameters())
     disc_para = vq_loss.discriminator.parameters()
 
     optimizer = torch.optim.AdamW(model_para, lr=args.lr_refinement, betas=(0.9, 0.95), weight_decay=args.weight_decay)
-    optimizer_temp = torch.optim.AdamW(model_temp_para, lr=args.lr_refinement, betas=(0.9, 0.95), weight_decay=args.weight_decay)
     optimizer_disc = torch.optim.AdamW(disc_para, lr=args.lr_refinement, betas=(0.9, 0.95), weight_decay=args.weight_decay)
     
     train_dataloader, val_dataloader, train_sampler, len_train_set, len_val_set = build_dataloader(args)
@@ -103,20 +101,12 @@ def main_worker(args):
             cur_iter = len(train_dataloader) * (epoch-1) + step
             with torch.autocast(device_type='cuda', dtype=torch.float32):
                 x = x.to(device, non_blocking=True)
-                if cur_iter < 300:
-                    optimizer_temp.zero_grad()
-                    x_rec = vq_model.module.refinement(x)
-                    gen_loss, gen_loss_pack = vq_loss(x, x_rec, optimizer_idx=0, cur_epoch=epoch, last_layer=vq_model.module.decoder.last_layer)
-                    gen_loss.backward()
-                    torch.nn.utils.clip_grad_norm_(model_temp_para, 1.0)
-                    optimizer_temp.step()
-                else:
-                    optimizer.zero_grad()
-                    x_rec = vq_model.module.refinement(x)
-                    gen_loss, gen_loss_pack = vq_loss(x, x_rec, optimizer_idx=0, cur_epoch=epoch, last_layer=vq_model.module.decoder.last_layer)
-                    gen_loss.backward()
-                    torch.nn.utils.clip_grad_norm_(model_para, 1.0)
-                    optimizer.step()
+                optimizer.zero_grad()
+                x_rec = vq_model.module.refinement(x)
+                gen_loss, gen_loss_pack = vq_loss(x, x_rec, optimizer_idx=0, cur_epoch=epoch, last_layer=vq_model.module.decoder.last_layer)
+                gen_loss.backward()
+                torch.nn.utils.clip_grad_norm_(model_para, 1.0)
+                optimizer.step()
 
                 optimizer_disc.zero_grad()
                 d_loss, loss_pack = vq_loss(x, x_rec, optimizer_idx=1, cur_epoch=epoch)

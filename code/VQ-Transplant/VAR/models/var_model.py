@@ -9,7 +9,7 @@ from models.ema_quantizer import EMAVARQuantizer
 from models.online_quantizer import OnlineVARQuantizer
 from models.wasserstein_quantizer import WassersteinVARQuantizer
 from models.mmd_quantizer import MMDVARQuantizer
-from models.encoder_decoder import Encoder, Decoder
+from models.encoder_decoder import Encoder, Decoder, Normalize
 from utils.util import Pack
 from safetensors.torch import load_file
 from models.lpips import LPIPS
@@ -42,18 +42,19 @@ class VARModel(nn.Module):
 
         self.projector_out = nn.Sequential(
                 nn.Conv2d(32, 1024, kernel_size=3, padding=1),
-                nn.BatchNorm2d(1024),
+                Normalize(1024),
                 nn.SiLU(),
                 nn.Conv2d(1024, 1024, kernel_size=3, padding=1),
-                nn.BatchNorm2d(1024),
+                Normalize(1024),
                 nn.SiLU(),
                 nn.Conv2d(1024, 1024, kernel_size=3, padding=1),
-                nn.BatchNorm2d(1024),
-                nn.Conv2d(1024, 1024, kernel_size=3, padding=1),
-                nn.BatchNorm2d(1024),
+                Normalize(1024),
                 nn.SiLU(),
                 nn.Conv2d(1024, 1024, kernel_size=3, padding=1),
-                nn.BatchNorm2d(1024),
+                Normalize(1024),
+                nn.SiLU(),
+                nn.Conv2d(1024, 1024, kernel_size=3, padding=1),
+                Normalize(1024),
                 nn.SiLU(),
                 nn.Conv2d(1024, 32, kernel_size=3, padding=1),
             )
