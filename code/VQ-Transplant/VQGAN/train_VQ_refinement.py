@@ -126,8 +126,7 @@ def main_worker(args):
             vq_model.train()
             checkpoint_path = os.path.join(args.checkpoint_dir, 'checkpoint-'+args.saver_name_pre+'-'+str(epoch)+'.pth.tar')
             save_checkpoint({'epoch': epoch, 'model': vq_model.module.state_dict(), 'optimizer': optimizer.state_dict(), "discriminator": vq_loss.module.discriminator.state_dict(), 'optimizer_disc': optimizer_disc.state_dict(), 'args': args}, is_best=False, filename=checkpoint_path) 
-            if args.dataset_name == "ImageNet":
-                eval_reconstruction_epoch(args, vq_model, epoch)
+            eval_reconstruction_epoch(args, vq_model, epoch)
         torch.distributed.barrier()
 
         if epoch % args.eval_epochs == 0:
@@ -151,8 +150,6 @@ def main_worker(args):
     if int(os.environ['LOCAL_RANK']) == 0:
         checkpoint_path = os.path.join(args.checkpoint_dir, 'checkpoint-'+args.saver_name_pre+'.pth.tar')
         save_checkpoint({'epoch': epoch, 'model': vq_model.module.state_dict(), 'optimizer': optimizer.state_dict(), "discriminator": vq_loss.module.discriminator.state_dict(), 'optimizer_disc': optimizer_disc.state_dict(), 'args': args}, is_best=False, filename=checkpoint_path) 
-        if args.dataset_name != "ImageNet":
-            eval_reconstruction(args, vq_model)
     vq_model.eval() 
     dist.destroy_process_group()
 
