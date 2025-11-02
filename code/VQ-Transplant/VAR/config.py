@@ -114,7 +114,11 @@ def parse_arg():
 
     ### train prefix 
     if args.VQ == "wasserstein_vq" or args.VQ == "vanilla_vq" or args.VQ == "ema_vq" or args.VQ == "online_vq" or args.VQ == "mmd_vq":
-        args.training_pre = '{}_{}_{}'.format(args.VQ, args.stage, args.use_multiscale)
+        if args.stage == "transplant":
+            args.training_pre = '{}_{}_{}'.format(args.VQ, args.stage, args.use_multiscale)
+        else:
+            args.training_pre = '{}_{}_{}_{}'.format(args.VQ, args.stage, args.use_multiscale, args.refinement_epochs)
+
     args.saver_name_pre = args.training_pre + '_' + args.data_pre + '_' + args.model_pre + '_' + args.loss_pre
 
     dict_args = vars(args)
