@@ -1,12 +1,12 @@
 #!/bin/bash
 #SBATCH --job-name=rfid_var_refinement_p2
 #SBATCH --account=aip-rudner
-#SBATCH --partition=gpubase_l40s_b2
+#SBATCH --partition=gpubase_h100_b2
 #SBATCH --nodes=1
 #SBATCH --mem=50gb
 #SBATCH --cpus-per-task=8
 #SBATCH --time=12:00:00
-#SBATCH --gres=gpu:l40s:1
+#SBATCH --gres=gpu:h100:1
 #SBATCH --output /project/6105494/sunset/VQ-Projects/WassersteinVQ/VAR/metrics/Refinement/ImageNet/rfid_var_refinement_p2.out
 #SBATCH --error /project/6105494/sunset/VQ-Projects/WassersteinVQ/VAR/metrics/Refinement/ImageNet/rfid_var_refinement_p2.err
 
