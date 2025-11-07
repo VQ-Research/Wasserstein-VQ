@@ -26,8 +26,8 @@ FID_SPATIAL_NAME = "mixed_6/conv:0"
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--ref_batch", default="/project/6105494/shared/data/Input.npz", help="path to reference batch npz file")
-    parser.add_argument("--sample_path", default="/project/6105494/sunset/VQ-Projects/VQ-Transplant3/reconstruction/Refinement/ImageNet/", help="path to sample batch npz file")
-    parser.add_argument("--sample_name", default="mmd_vq_refinement_8192_True.npz", help="path to sample batch npz file")
+    parser.add_argument("--sample_path", default="/project/6105494/sunset/VQ-Projects/WassersteinVQ/VAR/reconstruction/Refinement/ImageNet/", help="path to sample batch npz file")
+    parser.add_argument("--sample_name", default="wasserstein_vq_refinement_4096_True_10_1.npz", help="path to sample batch npz file")
     args = parser.parse_args()
     args.sample_batch =  os.path.join(args.sample_path, args.sample_name)
 
