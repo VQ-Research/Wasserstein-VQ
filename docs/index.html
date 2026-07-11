@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Distributional Matching for Vector Quantization: a unified framework for stable training and complete codebook utilization.">
+  <title>Distributional Matching for Vector Quantization</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="wordmark" href="#top" aria-label="Wasserstein VQ home">
+      <span class="brand-name"><span>Wasserstein</span> <span class="brand-accent">VQ</span></span>
+    </a>
+    <nav aria-label="Main navigation">
+      <a href="#motivation">Motivation</a>
+      <a href="#method">Method</a>
+      <a href="#results">Results</a>
+      <a href="#citation">Citation</a>
+    </nav>
+    <a class="header-code" href="https://github.com/VQ-Research/Wasserstein-VQ" target="_blank" rel="noreferrer">GitHub <span aria-hidden="true">&#8599;</span></a>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="hero-grid" aria-hidden="true"></div>
+      <div class="hero-inner">
+        <h1>
+          <span class="title-primary">Distributional Matching</span>
+          <span class="title-secondary">for Vector Quantization: A Unified Theoretical and Empirical Framework</span>
+        </h1>
+        <p class="lead">A unified theoretical and empirical framework that traces training instability and codebook collapse to one cause: a mismatch between feature and code vector distributions.</p>
+
+        <div class="authors" aria-label="Authors">
+          <span><a class="author-link" href="https://sunset-clouds.github.io/" target="_blank" rel="noreferrer">Xianghong Fang</a><sup>1</sup></span><span>Litao Guo<sup>2</sup></span><span>Hengchao Chen<sup>1</sup></span>
+          <span>Yuxuan Zhang<sup>1</sup></span><span>Xiaofan Xia<sup>1</sup></span><span>Dingjie Song<sup>4</sup></span>
+          <span>Yexin Liu<sup>2</sup></span><span>Hao Wang<sup>5</sup></span><span>Harry Yang<sup>2</sup></span>
+          <span>Qiang Sun<sup>1</sup></span><span>Yuan Yuan<sup>3</sup></span>
+        </div>
+        <p class="affiliations"><span><sup>1</sup>University of Toronto</span><span><sup>2</sup>The Hong Kong University of Science and Technology</span><span><sup>3</sup>Boston College</span><span><sup>4</sup>Lehigh University</span><span><sup>5</sup>Southern University of Science and Technology</span></p>
+
+        <div class="hero-actions">
+          <a class="button button-primary" href="assets/Distributional_Matching_Vector_Quantization.pdf">Read paper <span aria-hidden="true">&#8594;</span></a>
+          <a class="button button-secondary" href="https://github.com/VQ-Research/Wasserstein-VQ" target="_blank" rel="noreferrer">Code <span aria-hidden="true">&#8599;</span></a>
+          <a class="button button-secondary" href="#citation">BibTeX <span aria-hidden="true">&#8595;</span></a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section motivation" id="motivation">
+      <div class="section-heading">
+        <p class="eyebrow">01 &nbsp; Motivation</p>
+        <h2>Two failures. One distributional cause.</h2>
+        <p>Vector quantization relies on the straight-through estimator and a learned codebook. When features and codes occupy different regions of the latent space, assignments concentrate on only a few codes: quantization error grows, gradient estimates become unreliable, and most of the codebook goes unused.</p>
+      </div>
+
+      <figure class="feature-figure">
+        <img src="assets/DistributionMatch.png" alt="Comparison of distribution mismatch, where features cluster around a few code vectors, and distribution match, where code vectors cover the feature distribution.">
+        <figcaption><strong>Matching changes the geometry of quantization.</strong> Aligned code vectors cover the feature space, reducing distortion while activating the full codebook.</figcaption>
+      </figure>
+
+      <div class="criteria" aria-label="Vector quantization evaluation criteria">
+        <article><span class="criterion-number">01</span><h3>Quantization error</h3><p>Average distortion between each feature and its nearest code. Lower error tightens the bound on the STE gradient gap.</p></article>
+        <article><span class="criterion-number">02</span><h3>Utilization rate</h3><p>The fraction of code vectors selected by at least one feature. Full utilization is the first defense against collapse.</p></article>
+        <article><span class="criterion-number">03</span><h3>Codebook perplexity</h3><p>The effective number of uniformly selected codes. It reveals imbalance that utilization alone cannot capture.</p></article>
+      </div>
+    </section>
+
+    <section class="theory-band">
+      <div class="theory-inner">
+        <p class="eyebrow light">02 &nbsp; Theoretical insight</p>
+        <blockquote>In high-dimensional latent spaces, the asymptotically optimal codebook distribution approaches the feature distribution.</blockquote>
+        <div class="theory-notes">
+          <p><strong>Support.</strong> Matching supports is necessary and sufficient for full utilization and vanishing worst-case quantization error as the codebook grows.</p>
+          <p><strong>Density.</strong> Optimal code density is proportional to <i>f</i><sup>(d+2)/d</sup>. As dimension <i>d</i> grows, the exponent tends to 1, motivating direct distribution alignment.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section method" id="method">
+      <div class="section-heading split-heading">
+        <div><p class="eyebrow">03 &nbsp; Methodology</p><h2>Match globally.<br>Quantize locally.</h2></div>
+        <p>Wasserstein VQ adds a global distribution alignment objective to the local nearest-neighbor VQ loss. Alignment gradients update only the codebook; the encoder remains free to learn expressive feature distributions.</p>
+      </div>
+
+      <figure class="architecture-figure">
+        <img src="assets/model_architecture.png" alt="Wasserstein VQ architecture showing an encoder, vector quantizer, decoder, and Wasserstein distribution matching loss between encoder features and codebook vectors.">
+        <figcaption>Wasserstein VQ integrates into standard encoder-quantizer-decoder pipelines as an auxiliary codebook objective.</figcaption>
+      </figure>
+
+      <div class="method-detail">
+        <div class="formula-block">
+          <p class="formula-label">Distribution matching objective</p>
+          <p class="formula">L<sub>match</sub> = D(P<sub>A</sub>, P<sub>B</sub>)</p>
+          <p>Here, <i>P</i><sub>A</sub> is the empirical encoder-feature distribution and <i>P</i><sub>B</sub> is the distribution of code vectors.</p>
+        </div>
+        <div class="method-copy">
+          <h3>A practical closed form</h3>
+          <p>Under a mild Gaussian approximation, the quadratic Wasserstein distance aligns the mean and covariance of features and codes. It avoids pairwise comparisons and adds only modest overhead at large codebook sizes.</p>
+          <div class="method-choice"><span>Wasserstein VQ</span><p>Efficient first- and second-order matching for approximately Gaussian latent spaces.</p></div>
+          <div class="method-choice"><span>MMD VQ</span><p>Nonparametric matching for strongly non-Gaussian features, with higher quadratic cost.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="results" id="results">
+      <div class="results-inner">
+        <div class="section-heading split-heading">
+          <div><p class="eyebrow light">04 &nbsp; Results</p><h2>Complete codebooks. Sharper reconstructions.</h2></div>
+          <p>Across FFHQ and ImageNet, distributional matching prevents collapse at unprecedented codebook scales. The same principle transfers to multi-scale VAR, improving quantization and reconstruction under a controlled architecture.</p>
+        </div>
+
+        <div class="results-subhead">
+          <p class="result-index">Tables 1 &amp; 2</p>
+          <div><h3>VQ-VAE at 100,000 codes</h3><p>Wasserstein VQ is the only method to use the entire codebook on both datasets, while also delivering the best reconstruction metrics.</p></div>
+        </div>
+
+        <div class="result-tabs" role="tablist" aria-label="Dataset results">
+          <button class="tab active" role="tab" aria-selected="true" aria-controls="ffhq-panel" id="ffhq-tab" data-tab="ffhq-panel">FFHQ</button>
+          <button class="tab" role="tab" aria-selected="false" aria-controls="imagenet-panel" id="imagenet-tab" data-tab="imagenet-panel">ImageNet</button>
+        </div>
+
+        <div class="result-panel active" id="ffhq-panel" role="tabpanel" aria-labelledby="ffhq-tab">
+          <div class="table-scroll"><table class="result-table">
+            <thead><tr><th>Method</th><th>Utilization &#8593;</th><th>Perplexity &#8593;</th><th>PSNR &#8593;</th><th>SSIM &#8593;</th><th>Rec. loss &#8595;</th></tr></thead>
+            <tbody>
+              <tr><td>Vanilla VQ</td><td>0.6%</td><td>481.0</td><td>27.86</td><td>74.2</td><td>0.0118</td></tr>
+              <tr><td>STE++</td><td>0.5%</td><td>450.7</td><td>27.52</td><td>72.4</td><td>0.0130</td></tr>
+              <tr><td>EMA VQ</td><td>2.7%</td><td>2,087.5</td><td>28.43</td><td>74.8</td><td>0.0105</td></tr>
+              <tr><td>Online VQ</td><td>3.6%</td><td>1,556.8</td><td>27.12</td><td>71.1</td><td>0.0142</td></tr>
+              <tr class="best-row"><td>Wasserstein VQ</td><td>100%</td><td>93,152.7</td><td>29.53</td><td>78.0</td><td>0.0083</td></tr>
+            </tbody>
+          </table></div>
+          <p class="result-context">FFHQ &middot; 256 tokens &middot; codebook size K = 100,000</p>
+        </div>
+        <div class="result-panel" id="imagenet-panel" role="tabpanel" aria-labelledby="imagenet-tab" hidden>
+          <div class="table-scroll"><table class="result-table">
+            <thead><tr><th>Method</th><th>Utilization &#8593;</th><th>Perplexity &#8593;</th><th>PSNR &#8593;</th><th>SSIM &#8593;</th><th>Rec. loss &#8595;</th></tr></thead>
+            <tbody>
+              <tr><td>Vanilla VQ</td><td>0.4%</td><td>337.0</td><td>24.43</td><td>57.4</td><td>0.0295</td></tr>
+              <tr><td>STE++</td><td>0.9%</td><td>730.6</td><td>24.86</td><td>59.1</td><td>0.0269</td></tr>
+              <tr><td>EMA VQ</td><td>3.0%</td><td>2,170.0</td><td>25.13</td><td>60.1</td><td>0.0257</td></tr>
+              <tr><td>Online VQ</td><td>4.1%</td><td>1,709.9</td><td>24.95</td><td>59.1</td><td>0.0267</td></tr>
+              <tr class="best-row"><td>Wasserstein VQ</td><td>100%</td><td>93,264.7</td><td>25.88</td><td>63.0</td><td>0.0223</td></tr>
+            </tbody>
+          </table></div>
+          <p class="result-context">ImageNet-1K &middot; 256 tokens &middot; codebook size K = 100,000</p>
+        </div>
+
+        <div class="results-divider"></div>
+
+        <div class="results-subhead">
+          <p class="result-index">Table 6</p>
+          <div><h3>Distribution matching strengthens VAR</h3><p>With the VAR encoder-decoder and latent features held fixed, Wasserstein matching lowers quantization error, increases perplexity, and improves reconstruction fidelity.</p></div>
+        </div>
+
+        <div class="var-comparison">
+          <div class="table-scroll"><table class="result-table var-table">
+            <thead><tr><th>Method</th><th>Codes</th><th>Error &#8595;</th><th>Utilization &#8593;</th><th>Perplexity &#8593;</th><th>r-FID &#8595;</th></tr></thead>
+            <tbody>
+              <tr><td>VAR</td><td>4,096</td><td>0.283</td><td>100%</td><td>2,981.4</td><td>0.92</td></tr>
+              <tr class="best-row"><td>Wasserstein VAR-c</td><td>4,096</td><td>0.255</td><td>100%</td><td>3,286.2</td><td>0.81</td></tr>
+              <tr class="best-row"><td>Wasserstein VAR-c</td><td>8,192</td><td>0.240</td><td>100%</td><td>6,518.2</td><td>0.73</td></tr>
+            </tbody>
+          </table></div>
+          <div class="var-callout"><strong>0.73</strong><span>r-FID at K = 8,192</span><p>Wasserstein VAR-c improves from 0.83 after 5 adaptation epochs to 0.73 after 15.</p></div>
+        </div>
+
+        <figure class="result-visual">
+          <img src="assets/VQ_Visualization_On_FFHQ.png" alt="Original FFHQ images in the top row and reconstructions from Wasserstein VQ in the bottom row.">
+          <figcaption><span>FFHQ / Wasserstein VQ</span> Original 256 x 256 inputs are shown above; reconstructions are shown below.</figcaption>
+        </figure>
+
+        <figure class="result-visual last-visual">
+          <img src="assets/VAR_Visualization_On_ImageNet.png" alt="Original ImageNet images in the top row and reconstructions from Wasserstein VAR in the bottom row.">
+          <figcaption><span>ImageNet / Wasserstein VAR</span> Original 256 x 256 inputs are shown above; reconstructions are shown below.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="section takeaways">
+      <p class="eyebrow">05 &nbsp; Takeaways</p>
+      <div class="takeaway-grid">
+        <h2>Distributional matching turns a fragile lookup table into a faithful map of the latent space.</h2>
+        <div>
+          <p>It unifies optimization stability and codebook collapse under one geometric explanation.</p>
+          <p>It scales to codebooks with 100,000 entries while maintaining complete utilization.</p>
+          <p>It is architecture-agnostic, supporting VQ-VAE, VQGAN, and downstream token-based models.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="citation" id="citation">
+      <div class="citation-inner">
+        <div><p class="eyebrow">06 &nbsp; Citation</p><h2>Build on this work.</h2><p>Please cite the paper if distributional matching helps your research.</p></div>
+        <div class="bibtex-wrap">
+          <pre id="bibtex"><code>@article{fang2026distributional,
+  title   = {Distributional Matching for Vector Quantization:
+             A Unified Theoretical and Empirical Framework},
+  author  = {Fang, Xianghong and Guo, Litao and Chen, Hengchao and
+             Zhang, Yuxuan and Xia, Xiaofan and Song, Dingjie and
+             Liu, Yexin and Wang, Hao and Yang, Harry and Sun, Qiang and
+             Yuan, Yuan},
+  journal = {arXiv},
+  year    = {2026}
+}</code></pre>
+          <button class="copy-button" type="button" data-copy aria-label="Copy BibTeX">Copy BibTeX</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>Distributional Matching for Vector Quantization</p>
+    <div><a href="assets/Distributional_Matching_Vector_Quantization.pdf">Paper</a><a href="https://github.com/VQ-Research/Wasserstein-VQ" target="_blank" rel="noreferrer">Code</a><a href="#top">Back to top &#8593;</a></div>
+  </footer>
+  <script src="script.js"></script>
+</body>
+</html>
