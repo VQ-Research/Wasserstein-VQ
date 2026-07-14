@@ -40,19 +40,19 @@ Our practical instantiation, **Wasserstein VQ**, aligns the first- and second-or
   <img src="figures/model-architecture.png" width="92%" alt="Wasserstein VQ model architecture">
 </p>
 
-Let $\mathcal{P}_A$ denote the empirical feature distribution and $\mathcal{P}_B$ the code-vector distribution. We augment the local nearest-neighbor VQ objective with a global alignment term:
+Let <i>P</i><sub>A</sub> denote the empirical feature distribution and <i>P</i><sub>B</sub> the code-vector distribution. We augment the local nearest-neighbor VQ objective with a global alignment term:
 
-$$
+```math
 \mathcal L = \alpha\,\mathcal L_{\mathrm{rec}} + \beta\,\mathcal L_{\mathrm{VQ}} + \gamma\,D(\mathcal P_A,\mathcal P_B).
-$$
+```
 
 Under a Gaussian approximation, the squared 2-Wasserstein distance has a closed form:
 
-$$
+```math
 W_2^2(\mathcal P_A,\mathcal P_B)
 = \|\mu_A-\mu_B\|_2^2
 + \operatorname{Tr}\!\left(\Sigma_A+\Sigma_B-2(\Sigma_B^{1/2}\Sigma_A\Sigma_B^{1/2})^{1/2}\right).
-$$
+```
 
 The matching gradient updates the **codebook only**, leaving the encoder free to learn expressive features. For strongly non-Gaussian features, the repository also provides an MMD-based alternative.
 
