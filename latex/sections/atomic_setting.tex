@@ -1,0 +1,53 @@
+\section{An Atomic Setting for Evaluating the Criterion Triple}
+\label{sec:atomic setting}
+\begin{figure*}[!t]
+    \vspace{-1ex}
+    \centering
+    \subfloat[$\cE$ w.r.t. $\mu$]{         
+        \label{fig:vq quantization error mean}  \includegraphics[width=0.225\textwidth]{figs/codebook_optimization/gaussian_distribution/quantization_error_mu_analysis.pdf}
+        }
+	\subfloat[$\cU$ w.r.t. $\mu$]{         
+        \label{fig:vq codebook utilization mean}  \includegraphics[width=0.225\textwidth]{figs/codebook_optimization/gaussian_distribution/codebook_utilization_mu_analysis.pdf}
+        }
+	\subfloat[$\mathcal{C}$ w.r.t. $\mu$]{         
+        \label{fig:vq codebook perplexity mean}  \includegraphics[width=0.225\textwidth]{figs/codebook_optimization/gaussian_distribution/codebook_perplexity_mu_analysis.pdf}
+        }
+    \subfloat[$\mathcal{L}_{W}$ w.r.t. $\mu$]{         
+        \label{fig:wasserstein distance mean}  \includegraphics[width=0.225\textwidth]{figs/codebook_optimization/gaussian_distribution/wasserstein_distance_mu_analysis.pdf}
+        }
+    \vspace{-0.1mm}
+    \subfloat[$\cE$ w.r.t. $\nu$]{         
+        \label{fig:vq quantization error mean(uniform)}  \includegraphics[width=0.225\textwidth]{figs/codebook_optimization/uniform_distribution/quantization_error_mu_analysis.pdf}
+        }
+	\subfloat[$\cU$ w.r.t. $\nu$]{         
+        \label{fig:vq codebook utilization mean(uniform)}  \includegraphics[width=0.225\textwidth]{figs/codebook_optimization/uniform_distribution/codebook_utilization_mu_analysis.pdf}
+        }
+	\subfloat[$\mathcal{C}$ w.r.t. $\nu$]{         
+        \label{fig:vq codebook perplexity mean(uniform)}  \includegraphics[width=0.225\textwidth]{figs/codebook_optimization/uniform_distribution/codebook_perplexity_mu_analysis.pdf}
+        }
+    \subfloat[$\mathcal{L}_{W}$ w.r.t. $\nu$]{     
+        \label{fig:wasserstein distance mean(uniform)}  \includegraphics[width=0.225\textwidth]{figs/codebook_optimization/uniform_distribution/wasserstein_distance_mu_analysis.pdf}
+        }
+    \vspace{-2pt}
+	\caption{The performance metrics $(\cE, \cU, \cC)$  for various VQ approaches. For panels (a) to (d), the codebook distribution is initialized as a Gaussian distribution, while for panels (e) to (h), the codebook distribution is initialized as a uniform distribution.}
+	\label{fig:analysis on criterion triple (VQ)}
+    \vspace{-3ex}
+\end{figure*}
+
+As discussed in Section~\ref{sec:distributional formulation}, the variance of the latent distribution has a substantial impact on $\mathcal{E}$. Therefore, a fair evaluation of the criterion triple should be conducted under identical latent distributions. However, in practical scenarios, either in VQ-VAE~\cite{Oord2017NeuralDR} or VQGAN~\cite{Esser2020TamingTF}, the encoder outputs exhibit significantly different distributions across quantization methods due to intrinsic differences in their algorithmic mechanisms. Moreover, these distributional discrepancies are not static but evolve dynamically throughout VQ training. As a result, directly comparing quantization errors fails to accurately reflect the intrinsic effectiveness of different VQ algorithms and may even lead to misleading conclusions. To address this, we introduce a controlled simulated experimental setting that enables a principled evaluation of the intrinsic behavior of VQ algorithms.
+
+Specifically, we assume that the encoder output feature distributions of all VQ methods follow the same Gaussian distribution, i.e., $\bz_i \sim \mathcal{N}_d(\mu \cdot \bm 1, \bm I_d)$. Although real-world feature distributions are often more complex, this simplification isolates the effect of the quantization mechanism itself and allows for controlled and comparable comparisons across methods. For the codebook distribution, we initialize all VQ methods with the same standard Gaussian distribution (by sampling $\be_k \sim \mathcal{N}_d(\bm 0, \bm I_d)$), ensuring that the distribution variance is identical across all methods.
+
+
+%this simplified setting allows us to isolate the effect of the quantization mechanism itself and study the behavior of different VQ algorithms under a controlled and comparable condition. For the codebook distribution, we initialize all VQ methods with the same standard Gaussian distribution by sampling $\be_k \sim \mathcal{N}_d(\bm 0, \bm I)$. Under this experimental setup, the distribution variance is explicitly controlled to be identical across all VQ methods, enabling a fair and principled comparison.
+
+Our baselines include Vanilla VQ~\cite{Oord2017NeuralDR}, EMA VQ~\cite{Razavi2019GeneratingDH}, Online VQ~\cite{Zheng2023OnlineCC}, and Linear VQ, which employs a linear projection layer with frozen code vectors~\cite{Zhu2024ScalingTC,Zhu2024AddressingRC}. For all VQ algorithms except Linear VQ, the sampled code vectors are treated as trainable parameters and optimized according to their respective update rules. In the case of Linear VQ, we focus on training only the linear projection layer. Detailed experimental specifications are provided in Appendix~\ref{appendix:details part2}.
+
+As visualized in Figures~\ref{fig:vq quantization error mean} to~\ref{fig:vq codebook perplexity mean}, \emph{Wasserstein VQ} outperforms all baselines in terms of the criterion triplet $(\cE, \cU, \mathcal{C})$, particularly when the feature distribution and the initialized codebook distribution exhibit large deviations. While existing VQ methods perform well under the idealized setting of $\mu=0$, this scenario is unrealistic: in practice, feature distributions are diverse and continuously evolving, making it infeasible to perfectly match the codebook distribution by codebook initialization. When a large initial distribution gap exists (e.g., $\mu=5$), existing methods fail to achieve effective distribution alignment and perform poorly, as depicted in Figure~\ref{fig:wasserstein distance mean}, highlighting their strong dependence on codebook initialization. In contrast, \emph{Wasserstein VQ} overcomes this limitation through explicit distributional matching regularization, thereby achieving superior performance across all criterion metrics.
+
+
+%For example, when there is a large initial distribution gap between the codebook and the features (e.g., $\mu=5$), all existing VQ methods exhibit poor performance. This observation indicates that the effectiveness of existing VQ methods is highly sensitive to the initialization of the codebook. 
+
+%As shown in Figure~\ref{fig:wasserstein distance mean}, the Wasserstein distance of all existing VQ methods is noticeably larger than that of \emph{Wasserstein VQ} when $\mu \geq 1.0$, indicating that existing methods fail to achieve effective distribution alignment between the features and the codebook. In contrast, \emph{Wasserstein VQ} eliminates the dependence on codebook initialization through the proposed explicit distributional matching regularization, thereby achieving the best performance across the criterion metrics.
+
+We observe the same behavior when the feature and codebook distributions are uniform, with feature vectors sampled from $\unif_d(\nu-1, \nu+1)$ and code vectors initialized from $\unif_d(-1,1)$. As shown in Figures~\ref{fig:vq quantization error mean(uniform)} to~\ref{fig:wasserstein distance mean(uniform)}, \emph{Wasserstein VQ} again performs the best, suggesting that its effectiveness extends beyond Gaussian assumptions and exhibits distribution-agnostic behavior.
