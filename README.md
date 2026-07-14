@@ -71,8 +71,8 @@ All models use 256 tokens. SSIM is reported on the paper's 0–100 scale.
 | ImageNet-1K | Online VQ | 4.1% | 1,709.9 | 24.95 | 59.1 | 0.0267 |
 | ImageNet-1K | **Wasserstein VQ** | **100%** | **93,264.7** | **25.88** | **63.0** | **0.0223** |
 
-<p align="center">
-  <img src="figures/ffhq-reconstruction.png" width="92%" alt="FFHQ original and Wasserstein VQ reconstructed images">
+<p align="left">
+  <img src="figures/ffhq-reconstruction.png" width="88%" alt="FFHQ original and Wasserstein VQ reconstructed images">
 </p>
 
 ### Fixed-scale VQGAN on ImageNet-1K
