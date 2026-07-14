@@ -82,7 +82,13 @@ Decoder adaptation suffixes **a / b / c** correspond to **5 / 10 / 15 epochs**.
 | Model | Tokens | Codebook | Utilization ↑ | r-FID ↓ | r-IS ↑ | LPIPS ↓ | PSNR ↑ | SSIM ↑ |
 |:--|--:|--:|--:|--:|--:|--:|--:|--:|
 | Wasserstein VQ-a | 512 | 16,384 | 99.8% | 1.04 | 191.3 | 0.114 | 24.36 | 64.0 |
+| Wasserstein VQ-a | 512 | 32,768 | 99.7% | 0.98 | 193.9 | 0.111 | 24.37 | 64.3 |
+| Wasserstein VQ-a | 512 | 65,536 | 99.6% | 0.92 | 195.5 | 0.106 | 24.68 | 65.4 |
+| Wasserstein VQ-b | 512 | 16,384 | 99.8% | 0.98 | 192.9 | 0.114 | 24.34 | 63.7 |
 | Wasserstein VQ-b | 512 | 32,768 | 99.8% | 0.88 | 196.2 | 0.109 | 24.60 | 64.7 |
+| Wasserstein VQ-b | 512 | 65,536 | 99.6% | 0.81 | **198.7** | 0.105 | **24.77** | **65.5** |
+| Wasserstein VQ-c | 512 | 16,384 | 99.8% | 0.90 | 194.1 | 0.114 | 24.27 | 63.4 |
+| Wasserstein VQ-c | 512 | 32,768 | 99.8% | 0.85 | 196.4 | 0.109 | 24.43 | 64.1 |
 | **Wasserstein VQ-c** | 512 | 65,536 | 99.6% | **0.79** | 198.5 | **0.104** | 24.73 | 65.2 |
 
 ### Multi-scale Wasserstein VAR on ImageNet-1K
