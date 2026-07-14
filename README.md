@@ -201,25 +201,6 @@ The **atomic setting** controls this confounding factor by evaluating every VQ m
 | [Prototypical study](SimulationAnalyses/Prototypical%20Study/) | How do matched/mismatched centers and radii affect the three criteria? | `Prototypical_Study.py` |
 | [Quantitative analyses](SimulationAnalyses/QuantitativeAnalyses/) | How do codebook size, feature dimension, and sample size change performance? | Gaussian/uniform sweep scripts |
 
-<table>
-  <tr>
-    <td width="50%"><img src="figures/prototypical-study.png" alt="Prototypical distribution matching study"></td>
-    <td width="50%"><img src="figures/quantitative-gaussian.png" alt="Quantitative Gaussian analyses"></td>
-  </tr>
-  <tr>
-    <td align="center"><b>Effects of distribution matching</b></td>
-    <td align="center"><b>Controlled Gaussian analyses</b></td>
-  </tr>
-  <tr>
-    <td width="50%"><img src="figures/quantitative-uniform.png" alt="Quantitative uniform analyses"></td>
-    <td width="50%"><img src="figures/quantization-lower-bound.png" alt="Quantization-error lower-bound analyses"></td>
-  </tr>
-  <tr>
-    <td align="center"><b>Controlled uniform analyses</b></td>
-    <td align="center"><b>Quantization-error lower bounds</b></td>
-  </tr>
-</table>
-
 ## Citation
 
 If this work is useful in your research, please cite:
