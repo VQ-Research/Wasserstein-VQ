@@ -8,7 +8,7 @@
 [![Paper](https://img.shields.io/badge/Paper-PDF-B31B1B?style=for-the-badge)](https://vq-research.github.io/Wasserstein-VQ/assets/Distributional_Matching_Vector_Quantization.pdf)
 [![Models](https://img.shields.io/badge/%F0%9F%A4%97-Checkpoints-FFD21E?style=for-the-badge)](https://huggingface.co/sunset-clouds/Wasserstein-VAR)
 
-**Xianghong Fang<sup>1*</sup>** · **Litao Guo<sup>2</sup>** · **Hengchao Chen<sup>1</sup>** · **Yuxuan Zhang<sup>1</sup>** · **Xiaofan Xia<sup>1</sup>** · **Dingjie Song<sup>4</sup>** · **Yexin Liu<sup>2</sup>** · **Hao Wang<sup>5</sup>** · **Harry Yang<sup>2</sup>** · **Qiang Sun<sup>1</sup>** · **Yuan Yuan<sup>3*</sup>**
+<strong><a href="https://sunset-clouds.github.io/">Xianghong Fang</a><sup>1*</sup></strong> · **Litao Guo<sup>2</sup>** · **Hengchao Chen<sup>1</sup>** · **Yuxuan Zhang<sup>1</sup>** · **Xiaofan Xia<sup>1</sup>** · **Dingjie Song<sup>4</sup>** · **Yexin Liu<sup>2</sup>** · **Hao Wang<sup>5</sup>** · **Harry Yang<sup>2</sup>** · **Qiang Sun<sup>1</sup>** · <strong>Yuan Yuan<sup>3*</sup></strong>
 
 <sup>1</sup> University of Toronto · <sup>2</sup> HKUST · <sup>3</sup> Boston College · <sup>4</sup> Lehigh University · <sup>5</sup> SUSTech<br>
 \* Corresponding authors
