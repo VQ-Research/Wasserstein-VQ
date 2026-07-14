@@ -189,12 +189,17 @@ bash scripts/rFID/rFID_refinement_p2.sh
 
 The simulations isolate VQ behavior from encoder/decoder training and directly test the criterion triple.
 
+### Why an atomic setting?
+
+Quantization error <i>E</i> is strongly affected by the variance of the latent feature distribution. In practical VQ-VAE and VQGAN training, different quantization algorithms induce substantially different encoder-output distributions, and these distributions continue to evolve throughout training. Consequently, directly comparing raw quantization errors across independently trained models does not isolate the intrinsic effectiveness of their VQ algorithms and can lead to misleading conclusions.
+
+The **atomic setting** controls this confounding factor by evaluating every VQ method under the **same latent distribution**. This makes it possible to compare all three criteria—quantization error, codebook utilization, and codebook perplexity—on equal footing.
+
 | Study | Question | Entry point / output |
 |:--|:--|:--|
-| [Atomic setting](SimulationAnalyses/DistributionalMatchingPerspective/) | How do common VQ methods respond as feature/code distributions move into or out of alignment? | Gaussian and uniform scripts; CSVs and metric plots |
+| [Atomic setting](SimulationAnalyses/DistributionalMatchingPerspective/) | How do VQ algorithms compare on the criterion triple when the latent distribution is held fixed? | Controlled Gaussian and uniform experiments; CSVs and metric plots |
 | [Prototypical study](SimulationAnalyses/Prototypical%20Study/) | How do matched/mismatched centers and radii affect the three criteria? | `Prototypical_Study.py` |
 | [Quantitative analyses](SimulationAnalyses/QuantitativeAnalyses/) | How do codebook size, feature dimension, and sample size change performance? | Gaussian/uniform sweep scripts |
-| [Lower-bound analyses](SimulationAnalyses/QuantizationErrorLowerBoundAnalyses/) | How closely does observed quantization error track the theoretical lower bound? | Gaussian/uniform sweep scripts |
 
 <table>
   <tr>
