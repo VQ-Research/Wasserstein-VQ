@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="82" viewBox="0 0 1100 82" role="img" aria-labelledby="title desc">
+  <title id="title">Distribution matching training objective</title>
+  <desc id="desc">L equals alpha times reconstruction loss plus beta times vector quantization loss plus gamma times the distribution distance between feature and code distributions.</desc>
+  <style>
+    text { fill: #24292f; font-family: "STIX Two Math", "Cambria Math", "Times New Roman", serif; font-size: 29px; }
+    .sub { font-size: 19px; }
+  </style>
+  <text x="550" y="49" text-anchor="middle">&#x2112; = &#x03B1; &#x2112;<tspan class="sub" baseline-shift="sub">rec</tspan> + &#x03B2; &#x2112;<tspan class="sub" baseline-shift="sub">VQ</tspan> + &#x03B3; D(<tspan font-style="italic">P</tspan><tspan class="sub" baseline-shift="sub">A</tspan>, <tspan font-style="italic">P</tspan><tspan class="sub" baseline-shift="sub">B</tspan>)</text>
+</svg>

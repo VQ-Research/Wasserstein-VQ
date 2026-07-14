@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="92" viewBox="0 0 1400 92" role="img" aria-labelledby="title desc">
+  <title id="title">Closed-form squared 2-Wasserstein distance</title>
+  <desc id="desc">The squared 2-Wasserstein distance between feature and code distributions under a Gaussian approximation.</desc>
+  <style>
+    text { fill: #24292f; font-family: "STIX Two Math", "Cambria Math", "Times New Roman", serif; font-size: 27px; }
+    .sub, .sup { font-size: 18px; }
+  </style>
+  <text x="700" y="54" text-anchor="middle">W<tspan class="sub" baseline-shift="sub">2</tspan><tspan class="sup" baseline-shift="super">2</tspan>(<tspan font-style="italic">P</tspan><tspan class="sub" baseline-shift="sub">A</tspan>, <tspan font-style="italic">P</tspan><tspan class="sub" baseline-shift="sub">B</tspan>) = &#x2016;&#x03BC;<tspan class="sub" baseline-shift="sub">A</tspan> &#x2212; &#x03BC;<tspan class="sub" baseline-shift="sub">B</tspan>&#x2016;<tspan class="sub" baseline-shift="sub">2</tspan><tspan class="sup" baseline-shift="super">2</tspan> + Tr(&#x03A3;<tspan class="sub" baseline-shift="sub">A</tspan> + &#x03A3;<tspan class="sub" baseline-shift="sub">B</tspan> &#x2212; 2(&#x03A3;<tspan class="sub" baseline-shift="sub">B</tspan><tspan class="sup" baseline-shift="super">1/2</tspan> &#x03A3;<tspan class="sub" baseline-shift="sub">A</tspan> &#x03A3;<tspan class="sub" baseline-shift="sub">B</tspan><tspan class="sup" baseline-shift="super">1/2</tspan>)<tspan class="sup" baseline-shift="super">1/2</tspan>)</text>
+</svg>
