@@ -52,7 +52,7 @@ Under a Gaussian approximation, the squared 2-Wasserstein distance has a closed 
   <img src="figures/wasserstein-distance.svg" width="96%" alt="Closed-form squared 2-Wasserstein distance between feature and code distributions">
 </p>
 
-The matching gradient updates the **codebook only**, leaving the encoder free to learn expressive features. For strongly non-Gaussian features, the repository also provides an MMD-based alternative.
+The matching gradient updates the **codebook only**, leaving the encoder free to learn expressive features.
 
 ## Main results
 
