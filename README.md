@@ -209,6 +209,8 @@ The **atomic setting** controls this confounding factor by evaluating every VQ m
 
 ## Citation
 
+Machine-readable citation metadata is available in [CITATION.cff](CITATION.cff), with the [2026 arXiv preprint](https://arxiv.org/abs/2607.15933) as the preferred paper citation. This identifies the current 2026 paper; the related [2025 paper](https://arxiv.org/abs/2506.15078) has a different title and arXiv identifier.
+
 If this work is useful in your research, please cite:
 
 ```bibtex
